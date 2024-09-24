@@ -21,24 +21,26 @@ public class SpawnerManager : MonoBehaviour
 
         for (int i = 0; i < _markers.Count; i++)
         {
-            Instantiate(_peashooter, _markers[i]).transform.parent = _enemies;
-            //index = Random.Range(0, _markers.Count);
 
-            //if (!indexes.Contains(index))
-            //{
-            //    indexes.Add(index);
-            //    Instantiate(_peashooter, _markers[indexes[i]]).transform.parent = _enemies;
-            //    enemyCount++;
-            //}
-            //else
-            //{
-            //    i--;
-            //}
+            index = Random.Range(0, _markers.Count);
 
-            //if (enemyCount == 20)
-            //{
-            //    break;
-            //}
+            if (!indexes.Contains(index))
+            {
+                indexes.Add(index);
+                GameObject enemy = Instantiate(_peashooter, _markers[indexes[i]]);
+                enemy.transform.parent = _enemies;
+                enemy.name = "Peashooter" + (i + 1);
+                enemyCount++;
+            }
+            else
+            {
+                i--;
+            }
+
+            if (enemyCount == 10)
+            {
+                break;
+            }
 
         }
         
