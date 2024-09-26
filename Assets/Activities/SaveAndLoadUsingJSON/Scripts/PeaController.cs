@@ -21,6 +21,8 @@ public class PeaController : MonoBehaviour
     [SerializeField] float _peaLifetime;
     #endregion
 
+    [SerializeField] private SaveAndLoadUsingJSON _saveAndLoadUsingJSON;
+
     #endregion
 
     private void Start()
@@ -48,6 +50,11 @@ public class PeaController : MonoBehaviour
 
     }
 
+    public void SetSaveAndLoadUsingJSON(SaveAndLoadUsingJSON saveAndLoadUsingJSON)
+    {
+        _saveAndLoadUsingJSON = saveAndLoadUsingJSON;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Terrain"))
@@ -58,6 +65,7 @@ public class PeaController : MonoBehaviour
         {
             if(other.CompareTag("Enemy"))
             {
+                _saveAndLoadUsingJSON.RemoveEnemyTransform(other.transform);
                 Destroy(gameObject);
                 Destroy(other.gameObject);
             }
@@ -66,9 +74,8 @@ public class PeaController : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("YIPPIE");
                 Destroy(gameObject);
-                //Destroy(other.gameObject);
+                Destroy(other.gameObject);
             }
         }
     }

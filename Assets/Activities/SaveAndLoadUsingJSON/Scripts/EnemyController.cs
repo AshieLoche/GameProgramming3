@@ -35,6 +35,8 @@ public class EnemyController : MonoBehaviour
     private bool _isFiring;
     #endregion
 
+    private SaveAndLoadUsingJSON _saveAndLoadUsingJSON;
+
     #endregion
 
     void Start()
@@ -56,6 +58,13 @@ public class EnemyController : MonoBehaviour
         {
             _enemyRigidbody.angularVelocity = Vector3.zero;
         }
+
+        _saveAndLoadUsingJSON.SetEnemyTransform(transform);
+    }
+
+    public void SetSaveAndLoadUsingJSON(SaveAndLoadUsingJSON saveAndLoadUsingJSON)
+    {
+        _saveAndLoadUsingJSON = saveAndLoadUsingJSON;
     }
 
     #region Movement

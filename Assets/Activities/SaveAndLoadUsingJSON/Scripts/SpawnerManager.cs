@@ -2,6 +2,8 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 public class SpawnerManager : MonoBehaviour
 {
@@ -12,7 +14,8 @@ public class SpawnerManager : MonoBehaviour
     [SerializeField] private Transform _playerSpawnMarker;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private Transform _playerParentTransform;
-    [SerializeField] private CinemachineController cinemachineController;
+    [SerializeField] private CinemachineController _cinemachineController;
+    [SerializeField] private SaveAndLoadUsingJSON _saveAndLoadUsingJSON;
 
     [Header("Enemies")]
     [SerializeField] private List<Transform> _enemySpawnMarkers;
@@ -42,15 +45,18 @@ public class SpawnerManager : MonoBehaviour
         #region Instantiate Player
         _playerClone = Instantiate(_playerPrefab, _playerSpawnMarker);
         _playerClone.transform.parent = _playerParentTransform;
+        _playerClone.name = "Snow Pea";
         #endregion
 
         #region Attach Virtual Camera
-        cinemachineController.SetVirtualCamera(_playerClone.transform);
+        _cinemachineController.SetVirtualCamera(_playerClone.transform);
         #endregion
 
         #region Set Spawn Manager
         _playerClone.GetComponent<PlayerController>().SetSpawnManager(this);
         #endregion
+
+        _saveAndLoadUsingJSON.SetPlayerTransform(_playerClone.transform);
 
     }
 
@@ -59,6 +65,7 @@ public class SpawnerManager : MonoBehaviour
 
         indexes = new List<int>();
         int enemyCount = 0;
+        GameObject enemyClone;
 
         for (int i = 0; i < _enemySpawnMarkers.Count; i++)
         {
@@ -68,12 +75,13 @@ public class SpawnerManager : MonoBehaviour
             if (!indexes.Contains(index))
             {
                 indexes.Add(index);
-                GameObject enemy = Instantiate(_enemyPrefab, _enemySpawnMarkers[indexes[i]].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
-                enemy.transform.parent = _enemyParentTransform;
-                enemy.name = "Peashooter" + (i + 1);
-                EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                enemyClone = Instantiate(_enemyPrefab, _enemySpawnMarkers[indexes[i]].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
+                enemyClone.transform.parent = _enemyParentTransform;
+                enemyClone.name = "Peashooter_" + (i + 1);
+                EnemyController enemyController = enemyClone.GetComponent<EnemyController>();
                 enemyController.SetSpawnManager(this);
                 enemyController.SetPlayerTransform(_playerClone.transform);
+                enemyController.SetSaveAndLoadUsingJSON(_saveAndLoadUsingJSON);
                 enemyCount++;
             }
             else
@@ -81,7 +89,7 @@ public class SpawnerManager : MonoBehaviour
                 i--;
             }
 
-            if (enemyCount == 1)
+            if (enemyCount == 5)
             {
                 break;
             }
@@ -99,6 +107,7 @@ public class SpawnerManager : MonoBehaviour
                 StartCoroutine(PeaSpawnReload(reloadTime, user));
                 GameObject pea = Instantiate(peaPrefab, peaSpawnMarker);
                 pea.transform.parent = _peaParent;
+                pea.GetComponent<PeaController>().SetSaveAndLoadUsingJSON(_saveAndLoadUsingJSON);
             }
         }
         else
@@ -113,6 +122,54 @@ public class SpawnerManager : MonoBehaviour
         reloadStates[user] = true;
         yield return new WaitForSeconds(reloadTime);
         reloadStates[user] = false;
+    }
+
+    public void LoadPlayer(Vector3 position, Quaternion rotation)
+    {
+        _playerClone.transform.position = position;
+        _playerClone.transform.rotation = rotation;
+    }
+
+    public void LoadEnemies(string name, Vector3 position, Quaternion rotation)
+    {
+        Transform child;
+
+        for (int i = 0; i < _enemyParentTransform.childCount; i++)
+        {
+            child = _enemyParentTransform.GetChild(i);
+
+            if (child.name == name)
+            {
+                child.position = position;
+                child.rotation = rotation;
+            }
+        }
+    }
+
+    public void RespawnEnemies(string name, Vector3 position, Quaternion rotation)
+    {
+        GameObject enemyClone = Instantiate(_enemyPrefab, position, rotation);
+        enemyClone.transform.parent = _enemyParentTransform;
+        enemyClone.name = name;
+        EnemyController enemyController = enemyClone.GetComponent<EnemyController>();
+        enemyController.SetSpawnManager(this);
+        enemyController.SetPlayerTransform(_playerClone.transform);
+        enemyController.SetSaveAndLoadUsingJSON(_saveAndLoadUsingJSON);
+    }
+
+    public void DestroyEnemies(string name)
+    {
+        Transform child;
+
+        for (int i = 0; i < _enemyParentTransform.childCount; i++)
+        {
+            child = _enemyParentTransform.GetChild(i);
+
+            if (child.name == name)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
 }
