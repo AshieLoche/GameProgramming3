@@ -21,6 +21,8 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
     public event Action<Vector2> MoveEvent;
     public event Action FireEvent;
     public event Action FireCanceledEvent;
+    public event Action SaveEvent;
+    public event Action LoadEvent;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -39,4 +41,19 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
         }
     }
 
+    public void OnSave(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            SaveEvent?.Invoke();
+        }
+    }
+
+    public void OnLoad(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            LoadEvent?.Invoke();
+        }
+    }
 }

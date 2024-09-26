@@ -66,8 +66,9 @@ public class PeaController : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
+                Debug.Log("YIPPIE");
                 Destroy(gameObject);
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
             }
         }
     }

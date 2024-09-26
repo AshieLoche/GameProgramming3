@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 914270081768859326}
   - component: {fileID: 7986116218922821673}
   - component: {fileID: 7166798692172444858}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Snow Pea - Pea
   m_TagString: Player_Pea
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 506190c720b46ec43b80617372679dc4, type: 2}
+  - {fileID: 2100000, guid: 6665e0d44b0f41c47bbc631a10010505, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,6 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDistance: 1500
   _moveTime: 2
-  _rotationAngle: 100
-  _rotationTime: 2
   _peaLifetime: 2

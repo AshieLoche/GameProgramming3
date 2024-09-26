@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isFiring)
         {
-            _spawnerManager.PeaSpawn(_playerPeaPrefab, _playerPeaSpawnMarker,_reloadTime);
+            _spawnerManager.PeaSpawn(_playerPeaPrefab, _playerPeaSpawnMarker,_reloadTime, gameObject);
         }
 
     }

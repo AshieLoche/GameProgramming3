@@ -24,7 +24,7 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("Peas")]
     [SerializeField] private Transform _peaParent;
-    private bool _isReloading;
+    private Dictionary<GameObject, bool> reloadStates = new Dictionary<GameObject, bool>();
 
     #endregion
 
@@ -68,7 +68,7 @@ public class SpawnerManager : MonoBehaviour
             if (!indexes.Contains(index))
             {
                 indexes.Add(index);
-                GameObject enemy = Instantiate(_enemyPrefab, _enemySpawnMarkers[indexes[i]]);
+                GameObject enemy = Instantiate(_enemyPrefab, _enemySpawnMarkers[indexes[i]].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
                 enemy.transform.parent = _enemyParentTransform;
                 enemy.name = "Peashooter" + (i + 1);
                 EnemyController enemyController = enemy.GetComponent<EnemyController>();
@@ -81,7 +81,7 @@ public class SpawnerManager : MonoBehaviour
                 i--;
             }
 
-            if (enemyCount == 10)
+            if (enemyCount == 1)
             {
                 break;
             }
@@ -90,22 +90,29 @@ public class SpawnerManager : MonoBehaviour
 
     }
 
-    public void PeaSpawn(GameObject peaPrefab, Transform peaSpawnMarker, float reloadTime)
+    public void PeaSpawn(GameObject peaPrefab, Transform peaSpawnMarker, float reloadTime, GameObject user)
     {
-        if (!_isReloading)
+        if (reloadStates.ContainsKey(user))
         {
-            StartCoroutine(PeaSpawnReload(reloadTime));
-            GameObject pea = Instantiate(peaPrefab, peaSpawnMarker);
-            pea.transform.parent = _peaParent;
+            if (!reloadStates[user])
+            {
+                StartCoroutine(PeaSpawnReload(reloadTime, user));
+                GameObject pea = Instantiate(peaPrefab, peaSpawnMarker);
+                pea.transform.parent = _peaParent;
+            }
+        }
+        else
+        {
+            reloadStates.Add(user, false);
         }
 
     }
 
-    private IEnumerator PeaSpawnReload(float reloadTime)
+    private IEnumerator PeaSpawnReload(float reloadTime, GameObject user)
     {
-        _isReloading = true;
+        reloadStates[user] = true;
         yield return new WaitForSeconds(reloadTime);
-        _isReloading = false;
+        reloadStates[user] = false;
     }
 
 }
