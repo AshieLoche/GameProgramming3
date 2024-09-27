@@ -75,7 +75,7 @@ public class PeaController : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 Destroy(gameObject);
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
             }
         }
     }
