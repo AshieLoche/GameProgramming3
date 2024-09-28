@@ -77,7 +77,17 @@ public class SpawnerManager : MonoBehaviour
             if (!_enemySpawnMarkerIndexes.Contains(_enemySpawnMarkerIndex))
             {
                 _enemySpawnMarkerIndexes.Add(_enemySpawnMarkerIndex);
-                enemyClone = Instantiate(_enemyPrefabs[1], _enemySpawnMarkers[_enemySpawnMarkerIndex].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
+                Vector3 position = Vector3.zero;
+                if (_enemyPrefabIndex == 0)
+                {
+                    position = _enemySpawnMarkers[_enemySpawnMarkerIndex].position;
+                }
+                else if (_enemyPrefabIndex == 1)
+                {
+                    position = _enemySpawnMarkers[_enemySpawnMarkerIndex].position - (transform.up * _enemySpawnMarkers[_enemySpawnMarkerIndex].position.y) + (transform.up * 70f);
+                }
+
+                enemyClone = Instantiate(_enemyPrefabs[1], position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
                 enemyClone.transform.parent = _enemyParentTransform;
                 if (enemyClone.name.Contains("Peashooter"))
                 {
