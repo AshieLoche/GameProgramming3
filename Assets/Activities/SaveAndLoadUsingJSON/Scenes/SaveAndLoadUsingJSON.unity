@@ -1260,7 +1260,9 @@ MonoBehaviour:
   - {fileID: 1313209153}
   - {fileID: 29703554}
   - {fileID: 1889025396}
-  _enemyPrefab: {fileID: 1574187304458314949, guid: 60226a57b4631cb4cafe49b466a3ba6a, type: 3}
+  _enemyPrefabs:
+  - {fileID: 1574187304458314949, guid: 60226a57b4631cb4cafe49b466a3ba6a, type: 3}
+  - {fileID: 1237614095744160982, guid: f9150ab75823cf149940fc4e94f8e96b, type: 3}
   _enemyParentTransform: {fileID: 2072283280}
   _peaParent: {fileID: 385574124}
 --- !u!4 &1043236602

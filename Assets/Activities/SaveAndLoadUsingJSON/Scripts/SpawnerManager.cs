@@ -19,11 +19,12 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("Enemies")]
     [SerializeField] private List<Transform> _enemySpawnMarkers;
-    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private List<GameObject> _enemyPrefabs;
     [SerializeField] private Transform _enemyParentTransform;
     private GameObject _playerClone;
-    private int index;
-    private List<int> indexes;
+    private int _enemyPrefabIndex;
+    private int _enemySpawnMarkerIndex;
+    private List<int> _enemySpawnMarkerIndexes;
 
     [Header("Peas")]
     [SerializeField] private Transform _peaParent;
@@ -63,21 +64,29 @@ public class SpawnerManager : MonoBehaviour
     private void EnemySpawn()
     {
 
-        indexes = new List<int>();
+        _enemyPrefabIndex = Random.Range(0, _enemyPrefabs.Count);
+        _enemySpawnMarkerIndexes = new List<int>();
         int enemyCount = 0;
         GameObject enemyClone;
 
         for (int i = 0; i < _enemySpawnMarkers.Count; i++)
         {
 
-            index = Random.Range(0, _enemySpawnMarkers.Count);
+            _enemySpawnMarkerIndex = Random.Range(0, _enemySpawnMarkers.Count);
 
-            if (!indexes.Contains(index))
+            if (!_enemySpawnMarkerIndexes.Contains(_enemySpawnMarkerIndex))
             {
-                indexes.Add(index);
-                enemyClone = Instantiate(_enemyPrefab, _enemySpawnMarkers[indexes[i]].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
+                _enemySpawnMarkerIndexes.Add(_enemySpawnMarkerIndex);
+                enemyClone = Instantiate(_enemyPrefabs[1], _enemySpawnMarkers[_enemySpawnMarkerIndex].position, Quaternion.Euler(transform.up * Random.Range(0f, 360f)));
                 enemyClone.transform.parent = _enemyParentTransform;
-                enemyClone.name = "Peashooter_" + (i + 1);
+                if (enemyClone.name.Contains("Peashooter"))
+                {
+                    enemyClone.name = "Peashooter_" + (i + 1);
+                }
+                else if (enemyClone.name.Contains("Squash"))
+                {
+                    enemyClone.name = "Squash_" + (i + 1);
+                }
                 EnemyController enemyController = enemyClone.GetComponent<EnemyController>();
                 enemyController.SetSpawnManager(this);
                 enemyController.SetPlayerTransform(_playerClone.transform);
@@ -89,7 +98,7 @@ public class SpawnerManager : MonoBehaviour
                 i--;
             }
 
-            if (enemyCount == 5)
+            if (enemyCount == 10)
             {
                 break;
             }
@@ -148,7 +157,18 @@ public class SpawnerManager : MonoBehaviour
 
     public void RespawnEnemies(string name, Vector3 position, Quaternion rotation)
     {
-        GameObject enemyClone = Instantiate(_enemyPrefab, position, rotation);
+        GameObject enemyPrefab = null;
+
+        if  (name.Contains("Peashooter"))
+        {
+            enemyPrefab = _enemyPrefabs[0];
+        }
+        else if (name.Contains("Squash"))
+        {
+            enemyPrefab = _enemyPrefabs[1];
+        }
+
+        GameObject enemyClone = Instantiate(enemyPrefab, position, rotation);
         enemyClone.transform.parent = _enemyParentTransform;
         enemyClone.name = name;
         EnemyController enemyController = enemyClone.GetComponent<EnemyController>();

@@ -42,8 +42,8 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Mouse",
-                    "type": "Value",
+                    "name": "Rotate",
+                    "type": "PassThrough",
                     "id": "2cfc0d9a-e8be-4073-a48b-8fa19cba42e3",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -141,15 +141,59 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "7837a5b8-9495-4585-b9c3-705aece4ecbd",
-                    "path": "<Mouse>/position",
+                    "name": "Arrow Keys",
+                    "id": "47378847-1af4-41cb-ac9d-652601a6bbf4",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse",
-                    "isComposite": false,
+                    "action": "Rotate",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "383207c2-9402-4feb-84c5-6e8e382c5ba3",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "706336fb-b6a7-46ef-86b0-20fe0ee64b68",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "de9a7169-2c2e-45d6-8fea-7fd6c56763d7",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ea8ed2e5-ef50-4854-934a-bd8586d0e77f",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

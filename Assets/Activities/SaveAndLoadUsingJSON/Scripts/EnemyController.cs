@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyController : MonoBehaviour
@@ -12,6 +13,16 @@ public class EnemyController : MonoBehaviour
     #region Movement
     private Rigidbody _enemyRigidbody;
     [SerializeField] private Transform _playerTransform;
+
+    [Header("Directional Movement")]
+    [SerializeField] private float _horizontalMoveDistance;
+    [SerializeField] private float _horizontalMoveTime;
+    [SerializeField] private float _verticalMoveDistance;
+    private Vector2 _horizontalMoveDirection;
+    private float _horizontalMoveSpeed;
+    private Vector2 _verticalMoveDirection;
+    private float _verticalMoveSpeed;
+    private const float gravity = 9.81f;
 
     [Header("Rotational Movement")]
     [SerializeField] private float _reachLength;
@@ -43,7 +54,10 @@ public class EnemyController : MonoBehaviour
     {
 
         _enemyRigidbody = GetComponent<Rigidbody>();
-        _enemyPeaSpawnMarker = transform.GetChild(1);
+        if (name.Contains("Peashooter"))
+        {
+            _enemyPeaSpawnMarker = transform.GetChild(1);
+        }
 
     }
 
@@ -52,7 +66,14 @@ public class EnemyController : MonoBehaviour
         if (_playerTransform != null)
         {
             Rotate();
-            Fire();
+            if (name.Contains("Peashooter"))
+            {
+                Fire();
+            }
+            else if (name.Contains("Squash"))
+            {
+                Squash();
+            }
         }
         else
         {
@@ -113,7 +134,18 @@ public class EnemyController : MonoBehaviour
     private void GetVectors()
     {
         _origin = transform.forward;
-        _direction = _playerTransform.position - _enemyPeaSpawnMarker.position;
+        Vector3 target = Vector3.zero;
+
+        if (name.Contains("Peashooter"))
+        {
+            target = _enemyPeaSpawnMarker.position;
+        }
+        else if (name.Contains("Squash"))
+        {
+            target = transform.position;
+        }
+
+        _direction = _playerTransform.position - target;
     }
 
     private float GetMagnitude(Vector3 vector)
@@ -155,11 +187,28 @@ public class EnemyController : MonoBehaviour
     {
         if (ReachPlayer())
         {
-            _spawnerManager.PeaSpawn(_enemyPeaPrefab, _enemyPeaSpawnMarker, _reloadTime, gameObject);
+
+            if (name.Contains("Peashooter"))
+            {
+                //_spawnerManager.PeaSpawn(_enemyPeaPrefab, _enemyPeaSpawnMarker, _reloadTime, gameObject);
+            }
+
         }
     }
+
     private bool ReachPlayer()
     {
+
+        Vector3 origin = Vector3.zero;
+
+        if (name.Contains("Peashooter"))
+        {
+            origin = _enemyPeaSpawnMarker.position;
+        }
+        else if (name.Contains("Squash"))
+        {
+            origin = transform.position;
+        }
 
         return (!PlayerHidden()) ? Physics.Raycast(_enemyPeaSpawnMarker.position, transform.forward, _reachLength, 1 << LayerMask.NameToLayer("Player")) : false;
 
@@ -168,7 +217,18 @@ public class EnemyController : MonoBehaviour
     private bool PlayerHidden()
     {
 
-        if (Physics.Raycast(_enemyPeaSpawnMarker.position, _direction, out RaycastHit hit, _sightLength))
+        Vector3 origin = Vector3.zero;
+
+        if (name.Contains("Peashooter"))
+        {
+            origin = _enemyPeaSpawnMarker.position;
+        }
+        else if (name.Contains("Squash"))
+        {
+            origin = transform.position;
+        }
+
+        if (Physics.Raycast(origin, _direction, out RaycastHit hit, _sightLength))
         {
 
             return LayerMask.LayerToName(hit.collider.gameObject.layer) != "Player";
@@ -181,18 +241,55 @@ public class EnemyController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+
+        Vector3 origin = Vector3.zero;
+
+        if (name.Contains("Peashooter"))
+        {
+            origin = _enemyPeaSpawnMarker.position;
+        }
+        else if (name.Contains("Squash"))
+        {
+            origin = transform.position;
+        }
+
+
         // Reach
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(_enemyPeaSpawnMarker.position, _enemyPeaSpawnMarker.position + (transform.forward * _reachLength));
+        Gizmos.DrawLine(origin, origin + (transform.forward * _reachLength));
 
         // Visibility
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(_enemyPeaSpawnMarker.position, _enemyPeaSpawnMarker.position + _direction);
+        Gizmos.DrawLine(origin, origin + _direction);
 
         // Sight
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(_enemyPeaSpawnMarker.position + (transform.forward * _reachLength), _enemyPeaSpawnMarker.position + (transform.forward * _reachLength) + (transform.forward * _sightLength));
+        Gizmos.DrawLine(origin + (transform.forward * _reachLength), origin + (transform.forward * _reachLength) + (transform.forward * _sightLength));
+
     }
     #endregion
+
+    private void Squash()
+    {
+
+        if (ReachPlayer())
+        {
+
+            _horizontalMoveSpeed = _horizontalMoveDistance / _horizontalMoveTime;
+            _verticalMoveSpeed = Mathf.Sqrt(2 * gravity * _verticalMoveDistance);
+
+            _horizontalMoveDirection = transform.forward;
+            _verticalMoveDirection = transform.up;
+
+            Vector3 projectileSpeed = _horizontalMoveDirection * _horizontalMoveSpeed + _verticalMoveDirection * _verticalMoveSpeed;
+
+            _enemyRigidbody.velocity = projectileSpeed;
+
+
+            //player.velocity = new Vector2(horizontalDisplacement / time, Mathf.Sqrt(2 * gravity * verticalDisplacement));
+
+        }
+
+    }
 
 }

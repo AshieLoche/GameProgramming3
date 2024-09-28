@@ -23,7 +23,7 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
     public event Action FireCanceledEvent;
     public event Action SaveEvent;
     public event Action LoadEvent;
-    public event Action<Vector2> MouseEvent;
+    public event Action<Vector2> RotateEvent;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -58,8 +58,9 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
         }
     }
 
-    public void OnMouse(InputAction.CallbackContext context)
+    public void OnRotate(InputAction.CallbackContext context)
     {
-        MouseEvent?.Invoke(context.ReadValue<Vector2>());
+        RotateEvent?.Invoke(context.ReadValue<Vector2>());
     }
+
 }
