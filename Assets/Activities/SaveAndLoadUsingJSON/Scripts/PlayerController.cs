@@ -86,19 +86,20 @@ public class PlayerController : MonoBehaviour
     {
 
         _rotationSpeed = _rotationAngle / _rotationTime;
-        _rotationDirection = Input.GetAxis("Mouse X") * _mouseSensitivity;
-        //if (Input.GetKey(KeyCode.Q))
-        //{
-        //    _rotationDirection = -1;
-        //}
-        //else if (Input.GetKey(KeyCode.E))
-        //{
-        //    _rotationDirection = 1;
-        //}
-        //else
-        //{
-        //    _rotationDirection = 0;
-        //}
+        //_rotationDirection = Input.GetAxis("Mouse X");
+        Debug.Log(_rotationDirection);
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            _rotationDirection = -1f;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            _rotationDirection = 1f;
+        }
+        else
+        {
+            _rotationDirection = 0f;
+        }
 
         _playerRigidbody.angularVelocity = new Vector3(0f, _rotationSpeed * _rotationDirection, 0f);
 
