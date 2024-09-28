@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Header("Directional Movement")]
     [SerializeField] private float _moveDistance;
     [SerializeField] private float _moveTime;
+    [SerializeField] private float _mouseSensitivity;
     private Vector2 _moveDirection;
     private float _moveSpeed;
 
@@ -85,7 +86,20 @@ public class PlayerController : MonoBehaviour
     {
 
         _rotationSpeed = _rotationAngle / _rotationTime;
-        _rotationDirection = Input.GetAxis("Mouse X");
+        _rotationDirection = Input.GetAxis("Mouse X") * _mouseSensitivity;
+        //if (Input.GetKey(KeyCode.Q))
+        //{
+        //    _rotationDirection = -1;
+        //}
+        //else if (Input.GetKey(KeyCode.E))
+        //{
+        //    _rotationDirection = 1;
+        //}
+        //else
+        //{
+        //    _rotationDirection = 0;
+        //}
+
         _playerRigidbody.angularVelocity = new Vector3(0f, _rotationSpeed * _rotationDirection, 0f);
 
     }

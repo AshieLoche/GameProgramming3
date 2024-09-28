@@ -23,6 +23,7 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
     public event Action FireCanceledEvent;
     public event Action SaveEvent;
     public event Action LoadEvent;
+    public event Action<Vector2> MouseEvent;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -55,5 +56,10 @@ public class InputReader : ScriptableObject, GameInput.IGamePlayActions
         {
             LoadEvent?.Invoke();
         }
+    }
+
+    public void OnMouse(InputAction.CallbackContext context)
+    {
+        MouseEvent?.Invoke(context.ReadValue<Vector2>());
     }
 }

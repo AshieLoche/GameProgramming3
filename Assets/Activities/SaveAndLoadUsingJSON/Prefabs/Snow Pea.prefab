@@ -247,6 +247,7 @@ MonoBehaviour:
   _inputReader: {fileID: 11400000, guid: 9d7c3f4b2684862408c0972f84328805, type: 2}
   _moveDistance: 1000
   _moveTime: 2
+  _mouseSensitivity: 1000
   _rotationAngle: 50
   _rotationTime: 2
   _playerPeaPrefab: {fileID: 5773517988793097147, guid: 87e3de7369a4ea94e9b9349cdcfeb297, type: 3}
