@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
     [Header("Rotational Movement")]
     [SerializeField] private float _rotationAngle;
     [SerializeField] private float _rotationTime;
-    private float _rotationDirection, _rotationSpeed;
+    private Vector2 _rotationDirection;
+    private float _rotationSpeed;
     #endregion
 
     #region Pea Fire
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         _inputReader.MoveEvent += HandleMove;
         _inputReader.FireEvent += HandleFire;
         _inputReader.FireCanceledEvent += HandleFireCancel;
+        _inputReader.RotateEvent += HandleRotate;
         #endregion
 
         #region Disappear Cursor
@@ -79,6 +81,11 @@ public class PlayerController : MonoBehaviour
     {
         _isFiring = false;
     }
+
+    private void HandleRotate(Vector2 dir)
+    {
+        _rotationDirection = dir;
+    }
     #endregion
 
     #region Movement
@@ -86,22 +93,8 @@ public class PlayerController : MonoBehaviour
     {
 
         _rotationSpeed = _rotationAngle / _rotationTime;
-        //_rotationDirection = Input.GetAxis("Mouse X");
-        Debug.Log(_rotationDirection);
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            _rotationDirection = -1f;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _rotationDirection = 1f;
-        }
-        else
-        {
-            _rotationDirection = 0f;
-        }
 
-        _playerRigidbody.angularVelocity = new Vector3(0f, _rotationSpeed * _rotationDirection, 0f);
+        _playerRigidbody.angularVelocity = new Vector3(0f, _rotationSpeed * _rotationDirection.x, 0f);
 
     }
 
@@ -126,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isFiring)
         {
-            _spawnerManager.PeaSpawn(_playerPeaPrefab, _playerPeaSpawnMarker,_reloadTime, gameObject);
+            _spawnerManager.PeaSpawn(_playerPeaPrefab, _playerPeaSpawnMarker, _reloadTime, gameObject);
         }
 
     }

@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Mouse",
+                    "name": "Rotate",
                     "type": "Value",
                     "id": "2cfc0d9a-e8be-4073-a48b-8fa19cba42e3",
                     "expectedControlType": "Vector2",
@@ -141,15 +141,59 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "7837a5b8-9495-4585-b9c3-705aece4ecbd",
-                    "path": "<Mouse>/position",
+                    "name": "2D Vector",
+                    "id": "8a6bb61b-36db-4ecb-8ce2-616d30975ceb",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse",
-                    "isComposite": false,
+                    "action": "Rotate",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "a9af6129-68c1-46fd-a5e0-19aeea96bcdc",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "07439eb9-7e67-400b-aee4-e08a7c119d46",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "1814585b-33a5-4476-b6ec-bab691b64a54",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "6e59e791-ec44-4937-ba11-56b0521f2278",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

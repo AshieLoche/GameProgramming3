@@ -64,7 +64,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Mouse"",
+                    ""name"": ""Rotate"",
                     ""type"": ""Value"",
                     ""id"": ""2cfc0d9a-e8be-4073-a48b-8fa19cba42e3"",
                     ""expectedControlType"": ""Vector2"",
@@ -163,15 +163,59 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""7837a5b8-9495-4585-b9c3-705aece4ecbd"",
-                    ""path"": ""<Mouse>/position"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""8a6bb61b-36db-4ecb-8ce2-616d30975ceb"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Mouse"",
-                    ""isComposite"": false,
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a9af6129-68c1-46fd-a5e0-19aeea96bcdc"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""07439eb9-7e67-400b-aee4-e08a7c119d46"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""1814585b-33a5-4476-b6ec-bab691b64a54"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""6e59e791-ec44-4937-ba11-56b0521f2278"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -184,7 +228,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_GamePlay_Fire = m_GamePlay.FindAction("Fire", throwIfNotFound: true);
         m_GamePlay_Save = m_GamePlay.FindAction("Save", throwIfNotFound: true);
         m_GamePlay_Load = m_GamePlay.FindAction("Load", throwIfNotFound: true);
-        m_GamePlay_Mouse = m_GamePlay.FindAction("Mouse", throwIfNotFound: true);
+        m_GamePlay_Rotate = m_GamePlay.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -250,7 +294,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Fire;
     private readonly InputAction m_GamePlay_Save;
     private readonly InputAction m_GamePlay_Load;
-    private readonly InputAction m_GamePlay_Mouse;
+    private readonly InputAction m_GamePlay_Rotate;
     public struct GamePlayActions
     {
         private @GameInput m_Wrapper;
@@ -259,7 +303,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_GamePlay_Fire;
         public InputAction @Save => m_Wrapper.m_GamePlay_Save;
         public InputAction @Load => m_Wrapper.m_GamePlay_Load;
-        public InputAction @Mouse => m_Wrapper.m_GamePlay_Mouse;
+        public InputAction @Rotate => m_Wrapper.m_GamePlay_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -281,9 +325,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Load.started += instance.OnLoad;
             @Load.performed += instance.OnLoad;
             @Load.canceled += instance.OnLoad;
-            @Mouse.started += instance.OnMouse;
-            @Mouse.performed += instance.OnMouse;
-            @Mouse.canceled += instance.OnMouse;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         private void UnregisterCallbacks(IGamePlayActions instance)
@@ -300,9 +344,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Load.started -= instance.OnLoad;
             @Load.performed -= instance.OnLoad;
             @Load.canceled -= instance.OnLoad;
-            @Mouse.started -= instance.OnMouse;
-            @Mouse.performed -= instance.OnMouse;
-            @Mouse.canceled -= instance.OnMouse;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         public void RemoveCallbacks(IGamePlayActions instance)
@@ -326,6 +370,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnSave(InputAction.CallbackContext context);
         void OnLoad(InputAction.CallbackContext context);
-        void OnMouse(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }
