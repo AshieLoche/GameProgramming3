@@ -8,7 +8,7 @@ public class Week6_EnemyCSVReader
 
     public static string enemyCSVPath = "/Lessons/Week6/Editor/CSV Files/EnemyCSV.csv";
 
-    [MenuItem(itemName: "Utilities/Genereate Enemy SO")]
+    [MenuItem(itemName: "Utilities/Generate Enemy SO")]
     public static void GenerateEnemy()
     {
         Week6_EnemySO enemySO;
